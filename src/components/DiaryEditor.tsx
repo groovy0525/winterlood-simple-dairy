@@ -1,5 +1,5 @@
+import { ChangeEvent, FormEvent, useCallback, useState, useRef } from "react"
 import styled from "@emotion/styled"
-import { ChangeEvent, FormEvent, useCallback, useState } from "react"
 
 interface initialState {
   author: string
@@ -13,6 +13,8 @@ function DiaryEditor() {
     content: "",
     emotion: 1,
   })
+  const authorRef = useRef<HTMLInputElement>(null)
+  const contentRef = useRef<HTMLTextAreaElement>(null)
 
   const { author, content, emotion } = state
 
@@ -33,7 +35,18 @@ function DiaryEditor() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    console.log(state)
+    if (author.length < 1) {
+      alert("작성자는 최소 1글자 이상 입력해주세요")
+      authorRef.current?.focus()
+      return
+    }
+
+    if (content.length < 5) {
+      alert("일기 본문은 최소 5글자 이상 입력해주세요")
+      contentRef.current?.focus()
+      return
+    }
+
     alert("저장 성공")
   }
 
@@ -46,10 +59,16 @@ function DiaryEditor() {
           name="author"
           value={author}
           onChange={handleChangeState}
+          ref={authorRef}
         />
       </div>
       <div>
-        <Textarea name="content" value={content} onChange={handleChangeState} />
+        <Textarea
+          name="content"
+          value={content}
+          onChange={handleChangeState}
+          ref={contentRef}
+        />
       </div>
       <div>
         <Text>오늘의 감정점수 : </Text>
