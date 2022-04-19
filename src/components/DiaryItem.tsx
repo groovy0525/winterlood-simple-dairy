@@ -1,18 +1,44 @@
 import styled from "@emotion/styled"
+import { useRef, useState } from "react"
 import { Diary } from "../types"
 
 interface DiaryItemProps {
   diary: Diary
-  onDelete: (id: number) => void
+  onRemove: (id: number) => void
+  onEdit: (targetId: number, newContent: string) => void
 }
 
 function DiaryItem({
   diary: { id, author, content, emotion, created_date },
-  onDelete,
+  onRemove,
+  onEdit,
 }: DiaryItemProps) {
-  const handleDelete = () => {
+  const [isEdit, setIsEdit] = useState<boolean>(false)
+  const [localContent, setLocalContent] = useState<string>(content)
+  const localContentInput = useRef<HTMLTextAreaElement>(null)
+
+  const toggleIsEdit = () => setIsEdit((prev) => !prev)
+
+  const handleQuitEdit = () => {
+    setIsEdit(false)
+    setLocalContent(content)
+  }
+
+  const handleRemove = () => {
     if (window.confirm(`${id}번째 일기를 정말 삭제하시겠습니까?`)) {
-      onDelete(id)
+      onRemove(id)
+    }
+  }
+
+  const handleEdit = () => {
+    if (localContent.length < 5) {
+      localContentInput.current?.focus()
+      return
+    }
+
+    if (window.confirm(`${id}번 째 일기를 수정하시겠습니까?`)) {
+      onEdit(id, localContent)
+      toggleIsEdit()
     }
   }
 
@@ -25,8 +51,30 @@ function DiaryItem({
         <br />
         <DateTime>{new Date(created_date).toLocaleString()}</DateTime>
       </Info>
-      <Content>{content}</Content>
-      <button onClick={handleDelete}>삭제하기</button>
+      <Content>
+        {isEdit ? (
+          <>
+            <textarea
+              value={localContent}
+              onChange={(e) => setLocalContent(e.target.value)}
+              ref={localContentInput}
+            />
+          </>
+        ) : (
+          <>{content}</>
+        )}
+      </Content>
+      {isEdit ? (
+        <>
+          <button onClick={handleQuitEdit}>수정 취소</button>
+          <button onClick={handleEdit}>수정 완료</button>
+        </>
+      ) : (
+        <>
+          <button onClick={handleRemove}>삭제하기</button>
+          <button onClick={toggleIsEdit}>수정하기</button>
+        </>
+      )}
     </Base>
   )
 }
