@@ -1,11 +1,13 @@
 import { ChangeEvent, FormEvent, useCallback, useState, useRef } from "react"
 import styled from "@emotion/styled"
-import { Diary } from "../types"
+import { ReqDiary } from "../types"
 
-interface initialState extends Omit<Diary, "id" | "created_date"> {}
+interface DiaryEditorProps {
+  onCreate: (reqData: ReqDiary) => void
+}
 
-function DiaryEditor() {
-  const [state, setState] = useState<initialState>({
+function DiaryEditor({ onCreate }: DiaryEditorProps) {
+  const [state, setState] = useState<ReqDiary>({
     author: "",
     content: "",
     emotion: 1,
@@ -44,7 +46,17 @@ function DiaryEditor() {
       return
     }
 
-    alert("저장 성공")
+    onCreate({
+      author,
+      content,
+      emotion,
+    })
+
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    })
   }
 
   return (

@@ -5,3 +5,5 @@ export interface Diary {
   emotion: number
   created_date: number
 }
+
+export interface ReqDiary extends Omit<Diary, "id" | "created_date"> {}
