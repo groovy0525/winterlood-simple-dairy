@@ -1,11 +1,8 @@
 import { ChangeEvent, FormEvent, useCallback, useState, useRef } from "react"
 import styled from "@emotion/styled"
+import { Diary } from "../types"
 
-interface initialState {
-  author: string
-  content: string
-  emotion: number
-}
+interface initialState extends Omit<Diary, "id" | "created_date"> {}
 
 function DiaryEditor() {
   const [state, setState] = useState<initialState>({
