@@ -3,11 +3,19 @@ import { Diary } from "../types"
 
 interface DiaryItemProps {
   diary: Diary
+  onDelete: (id: number) => void
 }
 
 function DiaryItem({
-  diary: { author, content, emotion, created_date },
+  diary: { id, author, content, emotion, created_date },
+  onDelete,
 }: DiaryItemProps) {
+  const handleDelete = () => {
+    if (window.confirm(`${id}번째 일기를 정말 삭제하시겠습니까?`)) {
+      onDelete(id)
+    }
+  }
+
   return (
     <Base>
       <Info>
@@ -18,6 +26,7 @@ function DiaryItem({
         <DateTime>{new Date(created_date).toLocaleString()}</DateTime>
       </Info>
       <Content>{content}</Content>
+      <button onClick={handleDelete}>삭제하기</button>
     </Base>
   )
 }

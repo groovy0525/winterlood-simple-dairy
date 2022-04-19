@@ -20,10 +20,14 @@ function App() {
     ])
   }
 
+  const onDelete = (id: number) => {
+    setData((prevData) => prevData.filter((data) => data.id !== id))
+  }
+
   return (
     <>
       <DiaryEditor onCreate={onCreate} />
-      <DiaryList diaryList={data} />
+      <DiaryList diaryList={data} onDelete={onDelete} />
     </>
   )
 }
