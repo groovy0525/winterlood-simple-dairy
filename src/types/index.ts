@@ -7,3 +7,11 @@ export interface Diary {
 }
 
 export interface ReqDiary extends Omit<Diary, "id" | "created_date"> {}
+
+export interface Comment {
+  id: number
+  postId: number
+  name: string
+  email: string
+  body: string
+}
