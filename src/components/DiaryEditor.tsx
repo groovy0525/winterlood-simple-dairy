@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, useCallback, useState, useRef } from "react"
+import { ChangeEvent, FormEvent, useState, useRef } from "react"
 import styled from "@emotion/styled"
 import { ReqDiary } from "../types"
 
@@ -17,19 +17,16 @@ function DiaryEditor({ onCreate }: DiaryEditorProps) {
 
   const { author, content, emotion } = state
 
-  const handleChangeState = useCallback(
-    (
-      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-    ) => {
-      const { name, value } = e.target
+  const handleChangeState = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
 
-      setState((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }))
-    },
-    []
-  )
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
