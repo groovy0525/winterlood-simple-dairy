@@ -1,14 +1,19 @@
-import { ChangeEvent, FormEvent, useCallback, useState, useRef } from "react"
+import {
+  ChangeEvent,
+  FormEvent,
+  useState,
+  useRef,
+  memo,
+  useContext,
+} from "react"
 import styled from "@emotion/styled"
-
-interface initialState {
-  author: string
-  content: string
-  emotion: number
-}
+import { ReqDiary } from "../types"
+import { DiaryDispatchContext } from "../contexts/DiaryStateContext"
 
 function DiaryEditor() {
-  const [state, setState] = useState<initialState>({
+  const { onCreate } = useContext(DiaryDispatchContext)!
+
+  const [state, setState] = useState<ReqDiary>({
     author: "",
     content: "",
     emotion: 1,
@@ -19,15 +24,15 @@ function DiaryEditor() {
   const { author, content, emotion } = state
 
   const handleChangeState = (
-      e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-    ) => {
-      const { name, value } = e.target
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target
 
-      setState((prevState) => ({
-        ...prevState,
-        [name]: value,
-      }))
-    }
+    setState((prevState) => ({
+      ...prevState,
+      [name]: value,
+    }))
+  }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -44,7 +49,17 @@ function DiaryEditor() {
       return
     }
 
-    alert("저장 성공")
+    onCreate({
+      author,
+      content,
+      emotion,
+    })
+
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    })
   }
 
   return (
@@ -84,7 +99,7 @@ function DiaryEditor() {
   )
 }
 
-export default DiaryEditor
+export default memo(DiaryEditor)
 
 const Form = styled.form`
   border: 1px solid gray;
