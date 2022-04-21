@@ -1,18 +1,17 @@
+import { memo, useContext, useRef, useState } from "react"
 import styled from "@emotion/styled"
-import { useRef, useState } from "react"
 import { Diary } from "../types"
+import { DiaryDispatchContext } from "../contexts/DiaryStateContext"
 
 interface DiaryItemProps {
   diary: Diary
-  onRemove: (id: number) => void
-  onEdit: (targetId: number, newContent: string) => void
 }
 
 function DiaryItem({
   diary: { id, author, content, emotion, created_date },
-  onRemove,
-  onEdit,
 }: DiaryItemProps) {
+  const { onRemove, onEdit } = useContext(DiaryDispatchContext)!
+
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [localContent, setLocalContent] = useState<string>(content)
   const localContentInput = useRef<HTMLTextAreaElement>(null)
@@ -79,7 +78,7 @@ function DiaryItem({
   )
 }
 
-export default DiaryItem
+export default memo(DiaryItem)
 
 const Base = styled.div`
   margin-bottom: 10px;
