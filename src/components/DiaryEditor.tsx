@@ -18,8 +18,7 @@ function DiaryEditor() {
 
   const { author, content, emotion } = state
 
-  const handleChangeState = useCallback(
-    (
+  const handleChangeState = (
       e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
     ) => {
       const { name, value } = e.target
@@ -28,9 +27,7 @@ function DiaryEditor() {
         ...prevState,
         [name]: value,
       }))
-    },
-    []
-  )
+    }
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
