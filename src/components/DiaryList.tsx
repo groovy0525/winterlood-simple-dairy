@@ -1,26 +1,18 @@
+import { useContext } from "react"
 import styled from "@emotion/styled"
-import { Diary } from "../types"
+import { DiaryStateContext } from "../contexts/DiaryStateContext"
 import DiaryItem from "./DiaryItem"
 
-interface DiaryListProps {
-  diaryList: Diary[]
-  onRemove: (id: number) => void
-  onEdit: (targetId: number, newContent: string) => void
-}
+function DiaryList() {
+  const diaryList = useContext(DiaryStateContext)
 
-function DiaryList({ diaryList, onRemove, onEdit }: DiaryListProps) {
   return (
     <Base>
       <h2>일기 리스트</h2>
       <h4>{diaryList.length}개의 일기가 있습니다.</h4>
       <div>
         {diaryList.map((diary) => (
-          <DiaryItem
-            key={diary.id}
-            diary={diary}
-            onRemove={onRemove}
-            onEdit={onEdit}
-          />
+          <DiaryItem key={diary.id} diary={diary} />
         ))}
       </div>
     </Base>
